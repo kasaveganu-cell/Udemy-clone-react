@@ -1,32 +1,44 @@
 export default function TrustedCompanies() {
+  const companies = [
+    "Google",
+    "Microsoft",
+    "Amazon",
+    "Netflix",
+    "Spotify",
+    "Adobe",
+    "Meta",
+    "IBM",
+  ];
+
   return (
-    <section className="px-6 md:px-16 py-20">
+    <section className="px-6 md:px-16 py-20 bg-white">
 
-      <h2 className="text-3xl md:text-5xl font-bold text-center mb-16">
-        Trusted By Top Companies
-      </h2>
+      <div className="text-center">
 
-      <div className="flex flex-wrap justify-center gap-10 text-3xl font-bold text-gray-400">
+        <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+          Trusted By Top Companies
+        </h2>
 
-        <h1 className="hover:text-black transition duration-300">
-          Google
-        </h1>
+        <p className="text-gray-500 mt-4 text-lg">
+          Learners from the world's leading companies trust LearnHub.
+        </p>
 
-        <h1 className="hover:text-black transition duration-300">
-          Microsoft
-        </h1>
+      </div>
 
-        <h1 className="hover:text-black transition duration-300">
-          Amazon
-        </h1>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
 
-        <h1 className="hover:text-black transition duration-300">
-          Netflix
-        </h1>
+        {companies.map((company) => (
+          <div
+            key={company}
+            className="bg-gray-50 border border-gray-100 rounded-3xl p-8 text-center shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+          >
 
-        <h1 className="hover:text-black transition duration-300">
-          Spotify
-        </h1>
+            <h3 className="text-2xl font-bold text-gray-700">
+              {company}
+            </h3>
+
+          </div>
+        ))}
 
       </div>
 

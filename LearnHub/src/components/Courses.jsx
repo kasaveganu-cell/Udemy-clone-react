@@ -1,4 +1,6 @@
-import { FaStar } from "react-icons/fa";
+
+import { useState } from "react";
+import { FaStar, FaShoppingCart } from "react-icons/fa";
 
 const courses = [
   {
@@ -32,14 +34,33 @@ const courses = [
 ];
 
 export default function Courses() {
+  const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
+
+  const filteredCourses = courses.filter((course) =>
+    course.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const addToCart = (course) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push(course);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    setMessage(`✅ ${course.title} purchased successfully!`);
+
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
+
   return (
     <section className="px-6 md:px-16 py-16 overflow-hidden">
 
-      {/* Heading */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
         <div>
-
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900">
             Trending Courses
           </h2>
@@ -47,76 +68,85 @@ export default function Courses() {
           <p className="text-gray-500 mt-3 text-lg">
             Learn premium tech skills from industry experts.
           </p>
-
         </div>
 
-        <button className="bg-purple-600 text-white px-6 py-3 rounded-2xl hover:bg-purple-700 transition w-fit shadow-lg shadow-purple-500/20">
+        <button className="bg-purple-600 text-white px-6 py-3 rounded-2xl hover:bg-purple-700 transition">
           View All
         </button>
 
       </div>
 
-      {/* Course Cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-14 items-stretch">
+      <div className="mt-8">
+        <input
+          type="text"
+          placeholder="Search Courses..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full md:w-96 border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-purple-600"
+        />
+      </div>
 
-        {courses.map((course, index) => (
+      {message && (
+        <div className="mt-4 bg-green-100 text-green-700 px-4 py-3 rounded-xl">
+          {message}
+        </div>
+      )}
+
+      <p className="mt-4 text-gray-600">
+        {filteredCourses.length} Courses Found
+      </p>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-10 items-stretch">
+
+        {filteredCourses.map((course, index) => (
           <div
             key={index}
             className="bg-white rounded-3xl overflow-hidden shadow-lg hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 flex flex-col min-h-[500px]"
           >
 
-            {/* Image */}
             <div className="overflow-hidden">
-
               <img
                 src={course.image}
                 alt={course.title}
                 className="h-56 w-full object-cover hover:scale-110 transition duration-500"
               />
-
             </div>
 
-            {/* Content */}
             <div className="p-6 flex flex-col flex-grow">
 
-              {/* Badge */}
               <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm inline-block w-fit">
                 Bestseller
               </span>
 
-              {/* Title */}
               <h3 className="text-2xl font-bold mt-4 text-gray-900 leading-snug">
                 {course.title}
               </h3>
 
-              {/* Author */}
               <p className="text-gray-500 mt-2">
                 LearnHub Academy
               </p>
 
-              {/* Rating */}
               <div className="flex items-center gap-2 mt-4 text-yellow-500">
-
                 <FaStar />
-
                 <span className="font-semibold">
                   {course.rating}
                 </span>
-
               </div>
 
-              {/* Spacer */}
               <div className="flex-grow"></div>
 
-              {/* Bottom */}
               <div className="flex items-center justify-between mt-8">
 
                 <h4 className="text-3xl font-bold text-purple-600">
                   {course.price}
                 </h4>
 
-                <button className="bg-purple-600 text-white px-5 py-2 rounded-xl hover:bg-purple-700 transition shadow-lg shadow-purple-500/20">
-                  Buy
+                <button
+                  onClick={() => addToCart(course)}
+                  className="flex items-center gap-2 bg-purple-600 text-white px-5 py-2 rounded-xl hover:bg-purple-700 transition"
+                >
+                  <FaShoppingCart />
+                  Enroll Now
                 </button>
 
               </div>
@@ -131,3 +161,4 @@ export default function Courses() {
     </section>
   );
 }
+
